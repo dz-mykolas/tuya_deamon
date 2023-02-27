@@ -29,9 +29,23 @@ void on_disconnect(tuya_mqtt_context_t *context, void *user_data)
     TY_LOGI("on disconnect");
 }
 
+void message_helper(char* msg)
+{
+    //
+}
+
 void on_messages(tuya_mqtt_context_t *context, void *user_data, const tuyalink_message_t *msg)
 {
     TY_LOGI("on message id:%s, type:%d, code:%d", msg->msgid, msg->type, msg->code);
+    switch (msg->type) {
+        case THING_TYPE_PROPERTY_SET:
+            TY_LOGI("property set:%s", msg->data_string);
+            char *identifier = "";
+            //message_helper(identifier);
+            break;
+        default:
+            break;
+    }
     printf("\r\n");
 }
 
@@ -69,5 +83,4 @@ int main(int argc, char **argv)
     }
 
     return ret;
-    return 0;
 }
