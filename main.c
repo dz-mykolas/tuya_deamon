@@ -29,9 +29,9 @@ void on_disconnect(tuya_mqtt_context_t *context, void *user_data)
     TY_LOGI("on disconnect");
 }
 
-void message_helper(char* msg)
+void message_helper(char* s)
 {
-    //
+    printf("%s", s);
 }
 
 void on_messages(tuya_mqtt_context_t *context, void *user_data, const tuyalink_message_t *msg)
@@ -40,8 +40,10 @@ void on_messages(tuya_mqtt_context_t *context, void *user_data, const tuyalink_m
     switch (msg->type) {
         case THING_TYPE_PROPERTY_SET:
             TY_LOGI("property set:%s", msg->data_string);
-            char *identifier = "";
-            //message_helper(identifier);
+            // msg struct has cJSON. Can rework
+            cJSON *json = cJSON_Parse(msg->data_string);
+            char *identifier = json->child->string;
+            message_helper(identifier);
             break;
         default:
             break;
