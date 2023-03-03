@@ -1,5 +1,9 @@
 #include "tuya_utils.h"
 
+#define LOGS_ERROR 3
+#define LOGS_WARNING 4
+#define LOGS_NOTICE 5
+
 void on_connected(tuya_mqtt_context_t *context, void *user_data)
 {
     TY_LOGI("on connected");
@@ -24,11 +28,11 @@ void on_messages(tuya_mqtt_context_t *context, void *user_data, const tuyalink_m
             char buffer[100];
             if (tuya_write_file(data) == 1) {
                 snprintf(buffer, 100, "{\"file_write_error\":{\"value\":true}}");
-                log_event(3, "Failed to write to file");
+                log_event(LOGS_ERROR, "Failed to write to file");
             }
             else {
                 snprintf(buffer, 100, "{\"file_write_error\":{\"value\":false}}");
-                log_event(5, "Wrote to file");
+                log_event(LOGS_NOTICE, "Wrote to file");
             }
             tuyalink_thing_property_report(context, msg->device_id, buffer);
             break;
