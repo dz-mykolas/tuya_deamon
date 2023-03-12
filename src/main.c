@@ -24,8 +24,8 @@ int running = 1;
 char cwd[4096];
 int main(int argc, char **argv)
 {
+    // Extract this to separate function
     if (getcwd(cwd, sizeof(cwd)) != NULL) {
-        printf("Current working dir: %s\n", cwd);
         if (strlen(cwd) < 4050)
             strcat(cwd, "/example.txt");
         else {
@@ -55,11 +55,11 @@ int main(int argc, char **argv)
 
     // Create daemon
     int ret;
-    ret = become_daemon(0);
-    if (ret != OPRT_OK) {
-        log_event(LOGS_ERROR, "Error while starting daemon!");
-        return EXIT_FAILURE;
-    }
+    // ret = become_daemon(0);
+    // if (ret != OPRT_OK) {
+    //     log_event(LOGS_ERROR, "Error while starting daemon!");
+    //     return EXIT_FAILURE;
+    // }
 
     // Create client instance and connect to Tuya
     tuya_mqtt_context_t *client = &client_instance;

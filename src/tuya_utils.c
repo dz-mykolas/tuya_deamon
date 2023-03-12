@@ -18,14 +18,10 @@ void on_messages(tuya_mqtt_context_t *context, void *user_data, const tuyalink_m
 {
     TY_LOGI("on message id:%s, type:%d, code:%d", msg->msgid, msg->type, msg->code);
     cJSON *json = cJSON_Parse(msg->data_string);
-    char *identifier = json->child->string;
+    char *data = json->child->child->valuestring;
+    char buffer[100];
     switch (msg->type) {
-        case THING_TYPE_PROPERTY_SET:
-            identifier = json->child->next->valuestring;
-            break;
         case THING_TYPE_ACTION_EXECUTE:
-            char *data = json->child->child->valuestring;
-            char buffer[100];
             if (tuya_write_file(data) == 1) {
                 snprintf(buffer, 100, "{\"file_write_error\":{\"value\":true}}");
                 log_event(LOGS_ERROR, "Failed to write to file");
@@ -39,6 +35,7 @@ void on_messages(tuya_mqtt_context_t *context, void *user_data, const tuyalink_m
         default:
             break;
     }
+    cJSON_Delete(json);
     printf("\r\n");
 }
 

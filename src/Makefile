@@ -3,11 +3,8 @@ SRC:=$(wildcard *.c)
 OBJ:=$(SRC:.c=.o)
 CPPFLAGS:=-I../utils -I../interface -I../include
 LDFLAGS:=-L../lib \
--Wl,-rpath,../lib
-LDLIBS:=-llink_core \
--lmiddleware_implementation \
--lplatform_port \
--lutils_modules
+-Wl,-rpath,../lib,--no-as-needed
+LDLIBS:=$(wildcard ../lib/*.so)
 
 .PHONY: all clean $(BIN)
 
