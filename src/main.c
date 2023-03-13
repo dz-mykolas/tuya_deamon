@@ -64,6 +64,11 @@ int main(int argc, char **argv)
                                      .on_connected = on_connected,
                                      .on_disconnect = on_disconnect,
                                      .on_messages = on_messages});
+    if (ret != OPRT_OK) {
+        log_event(LOGS_ERROR, "Error while initializing!");
+        tuya_mqtt_deinit(client);
+        return EXIT_FAILURE;
+    }
     ret = tuya_mqtt_connect(client);
     if (ret != OPRT_OK) {
         log_event(LOGS_ERROR, "Error while connecting!");

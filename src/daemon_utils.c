@@ -3,8 +3,6 @@
 
 int become_daemon(int flags)
 {
-    int maxfd, fd;
-
     switch(fork()) {
         case -1: return -1;
         case 0: break;
@@ -25,7 +23,9 @@ int become_daemon(int flags)
     if(!(flags & BD_NO_CHDIR))
         chdir("/");
 
+    int fd;
     if(!(flags & BD_NO_CLOSE_FILES)) {
+        int maxfd;
         maxfd = sysconf(_SC_OPEN_MAX);
         if(maxfd == -1)
             maxfd = BD_MAX_CLOSE;

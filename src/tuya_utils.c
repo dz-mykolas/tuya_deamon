@@ -43,9 +43,9 @@ void ram_report_free(tuya_mqtt_context_t *context, char* device_id)
 {
     unsigned long ram = ram_get_free();
     char buffer[100];
-    snprintf(buffer, 100, "{\"ram_free\":{\"value\":\"%ld\"}}", ram);
+    snprintf(buffer, 100, "{\"ram_free\":{\"value\":\"%lu\"}}", ram);
     tuyalink_thing_property_report(context, device_id, buffer);
-    snprintf(buffer, 100, "Free ram: %ld", ram);
+    snprintf(buffer, 100, "Free ram: %lu", ram);
     log_event(LOGS_NOTICE, buffer);
 }
 
