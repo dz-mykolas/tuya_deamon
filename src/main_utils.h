@@ -8,8 +8,9 @@
 #include "tuya_utils.h"
 
 struct arguments {
-  char* args[3];
+  char *args[3];
 };
 
 error_t parse_opt(int key, char *arg, struct argp_state *state);
 void sig_handler(int sig);
+int directory_get_current(char *cwd, int size);

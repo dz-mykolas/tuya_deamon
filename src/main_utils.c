@@ -37,3 +37,24 @@ void sig_handler(int sig)
         break;
     }
 }
+
+#define LOGS_ERROR 3
+#define LOGS_WARNING 4
+#define LOGS_NOTICE 5
+int directory_get_current(char *cwd, int size)
+{
+    if (getcwd(cwd, sizeof(char)*size) != NULL) {
+        if (strlen(cwd) < 4050)
+            strcat(cwd, "/example.txt");
+        else {
+            perror("Directory path is too long");
+            log_event(LOGS_ERROR, "Directory path is too long");
+            return 1;
+        }
+    } else {
+        perror("Error getting current working dir");
+        log_event(LOGS_ERROR, "Error getting current working dir");
+        return 1;
+    }
+    return 0;
+}

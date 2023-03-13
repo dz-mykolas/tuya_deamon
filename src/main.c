@@ -4,6 +4,7 @@
 #define LOGS_ERROR 3
 #define LOGS_WARNING 4
 #define LOGS_NOTICE 5
+#define MAX_DIR_LENGTH 4096
 
 const char *argp_program_version = 
     "simple_daemon 1.0";
@@ -21,23 +22,11 @@ static struct argp argp = { options, parse_opt, args_doc, "Simple daemon"};
 tuya_mqtt_context_t client_instance;
 
 int running = 1;
-char cwd[4096];
+char cwd[MAX_DIR_LENGTH];
 int main(int argc, char **argv)
 {
-    // Extract this to separate function
-    if (getcwd(cwd, sizeof(cwd)) != NULL) {
-        if (strlen(cwd) < 4050)
-            strcat(cwd, "/example.txt");
-        else {
-            perror("Directory path is too long");
-            log_event(LOGS_ERROR, "Directory path is too long");
-            return 1;
-        }
-    } else {
-        perror("Error getting current working dir");
-        log_event(LOGS_ERROR, "Error getting current working dir");
-        return 1;
-    }
+    if (directory_get_current(cwd, MAX_DIR_LENGTH) != 0)
+        exit(1);
 
     // Signal handling
     struct sigaction sa;
