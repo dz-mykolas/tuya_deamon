@@ -7,7 +7,7 @@ make
 Start
 ```
 cd src
-./tuya_daemon
+./tuya_daemon "Product ID" "Device ID" "Device Secret"
 ```
 Clean
 ```
