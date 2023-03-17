@@ -20,8 +20,8 @@ static struct argp_option options[] = {
 static struct argp argp = { options, parse_opt, args_doc, "Simple daemon"};
 
 tuya_mqtt_context_t client_instance;
+volatile sig_atomic_t running = 1;
 
-int running = 1;
 int main(int argc, char **argv)
 {
     char cwd[MAX_DIR_LENGTH];

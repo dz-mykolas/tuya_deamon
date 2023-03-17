@@ -23,7 +23,7 @@ error_t parse_opt (int key, char *arg, struct argp_state *state)
     return 0;
 }
 
-extern int running;
+extern sig_atomic_t running;
 void sig_handler(int sig)
 {
     switch (sig) {
