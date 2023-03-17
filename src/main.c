@@ -22,9 +22,9 @@ static struct argp argp = { options, parse_opt, args_doc, "Simple daemon"};
 tuya_mqtt_context_t client_instance;
 
 int running = 1;
-char cwd[MAX_DIR_LENGTH];
 int main(int argc, char **argv)
 {
+    char cwd[MAX_DIR_LENGTH];
     if (directory_get_current(cwd, MAX_DIR_LENGTH) != 0)
         exit(1);
 
@@ -63,7 +63,8 @@ int main(int argc, char **argv)
                                      .timeout_ms = 2000,
                                      .on_connected = on_connected,
                                      .on_disconnect = on_disconnect,
-                                     .on_messages = on_messages});
+                                     .on_messages = on_messages,
+                                     .user_data = (void *) cwd});
     if (ret != OPRT_OK) {
         log_event(LOGS_ERROR, "Error while initializing!");
         tuya_mqtt_deinit(client);

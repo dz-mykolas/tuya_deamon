@@ -22,7 +22,7 @@ void on_messages(tuya_mqtt_context_t *context, void *user_data, const tuyalink_m
     char buffer[100];
     switch (msg->type) {
         case THING_TYPE_ACTION_EXECUTE:
-            if (tuya_write_file(data) == 1) {
+            if (tuya_write_file(data, (char *) user_data) == 1) {
                 snprintf(buffer, 100, "{\"file_write_error\":{\"value\":true}}");
                 log_event(LOGS_ERROR, "Failed to write to file");
             }
@@ -49,9 +49,8 @@ void ram_report_free(tuya_mqtt_context_t *context, char* device_id)
     log_event(LOGS_NOTICE, buffer);
 }
 
-int tuya_write_file(char *data)
+int tuya_write_file(char *data, char *cwd)
 {
-    extern char cwd[4096];
     FILE *fptr;
     fptr = fopen(cwd,"w");
 
